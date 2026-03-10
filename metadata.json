@@ -1,0 +1,5 @@
+{
+  "name": "WBC History Dashboard",
+  "description": "A comprehensive dashboard showing historical records, group stages, tournament results, and player statistics for the World Baseball Classic.",
+  "requestFramePermissions": []
+}
