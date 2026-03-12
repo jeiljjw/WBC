@@ -10,11 +10,11 @@ import {
 
 interface SidebarProps {
   activeTab: string;
-  setActiveTab: (tab: string) => void;
+  setActiveTab: (tab: "dashboard" | "groups" | "tournament" | "teams" | "batters" | "pitchers") => void;
 }
 
 export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
-  const navItems = [
+  const navItems: { id: "dashboard" | "groups" | "tournament" | "teams" | "batters" | "pitchers"; label: string; icon: typeof LayoutDashboard }[] = [
     { id: "dashboard", label: "대시보드", icon: LayoutDashboard },
     { id: "groups", label: "조 편성", icon: Users },
     { id: "tournament", label: "토너먼트", icon: Trophy },
@@ -24,7 +24,7 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
   ];
 
   return (
-    <div className="w-64 bg-slate-900 text-white h-full flex flex-col shrink-0">
+    <div className="w-64 bg-slate-900 text-white self-stretch flex flex-col shrink-0">
       <div className="p-6">
         <h1 className="text-2xl font-bold tracking-tight text-blue-400">WBC History</h1>
         <p className="text-slate-400 text-sm mt-1">월드 베이스볼 클래식 기록</p>
