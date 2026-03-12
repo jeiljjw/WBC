@@ -30,15 +30,24 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // 1. 현재 도메인(origin)과 다른 외부 리소스(카카오 API 등)는 서비스 워커가 가로채지 않고 패스합니다.
+  if (!event.request.url.startsWith(self.location.origin)) {
+    return;
+  }
+
+  // 2. 브라우저 확장 프로그램 요청 무시
+  if (event.request.url.startsWith('chrome-extension://')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        // Cache hit - return response
         if (response) {
           return response;
         }
         return fetch(event.request).catch(() => {
-          // If fetch fails (e.g. offline), return a fallback or nothing
+          // offline fallback
         });
       })
   );

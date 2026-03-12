@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 interface KakaoAdProps {
   position: "left" | "right";
@@ -6,30 +6,30 @@ interface KakaoAdProps {
 }
 
 export function KakaoAd({ position, adUnit }: KakaoAdProps) {
-  const adRef = useRef<boolean>(false);
-
   useEffect(() => {
-    if (adRef.current) return;
-    
-    // Add script right after ins dynamically for Kakao AdFit
     const container = document.getElementById(`kakao-ad-${position}`);
-    if (container) {
-      const ins = document.createElement("ins");
-      ins.className = "kakao_ad_area";
-      ins.style.display = "none";
-      ins.setAttribute("data-ad-unit", adUnit);
-      ins.setAttribute("data-ad-width", "160");
-      ins.setAttribute("data-ad-height", "600");
+    if (!container) return;
+    
+    // 만약 이미 DOM 안에 <ins> 광고 태그가 들어 있다면 중복 실행을 막습니다. (F5 새로고침 및 Strict Mode 대비)
+    if (container.querySelector("ins")) return;
 
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = "//t1.daumcdn.net/kas/static/ba.min.js";
-      script.async = true;
+    // 컨테이너 초기화
+    container.innerHTML = "";
 
-      container.appendChild(ins);
-      container.appendChild(script);
-      adRef.current = true;
-    }
+    const ins = document.createElement("ins");
+    ins.className = "kakao_ad_area";
+    ins.style.display = "none";
+    ins.setAttribute("data-ad-unit", adUnit);
+    ins.setAttribute("data-ad-width", "160");
+    ins.setAttribute("data-ad-height", "600");
+
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "//t1.daumcdn.net/kas/static/ba.min.js";
+    script.async = true;
+
+    container.appendChild(ins);
+    container.appendChild(script);
   }, [position, adUnit]);
 
   const positionClasses = position === "left" 
